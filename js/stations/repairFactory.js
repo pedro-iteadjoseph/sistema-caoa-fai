@@ -417,6 +417,7 @@ function mountRepairStation(container, stationId) {
     charts.fluxo.data.datasets[0].data = entradas;
     charts.fluxo.data.datasets[1].data = realizadosPorHora;
     charts.fluxo.data.datasets[2].data = atualPorHora;
+    centralizarEixoY(charts.fluxo, entradas, realizadosPorHora, atualPorHora);
     charts.fluxo.update();
 
     const porModelo = {};

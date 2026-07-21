@@ -221,29 +221,35 @@
 .alin-app .rt-approve-btn:hover { filter: brightness(1.08); box-shadow: 0 10px 26px -6px rgba(34,197,94,0.75); transform: translateY(-1px); }
 .alin-app .rt-approve-btn:active { transform: translateY(0) scale(0.97); }
 
-.alin-app .rt-repair-widget {
-  position: relative; display: flex; align-items: center; height: 52px; background: var(--bg-page);
-  border: 1px solid var(--border); border-radius: 999px; overflow: hidden;
-  transition: width .45s cubic-bezier(0.22, 1, 0.36, 1);
+/* Dropdown "Reparo": botão fixo (não altera o layout da linha) + painel flutuante que abre
+   por cima da tabela, sem empurrar/torcer as células vizinhas. */
+.alin-app .rt-reparo-wrap { position: relative; display: inline-flex; }
+.alin-app .rt-reparo-btn {
+  display: flex; align-items: center; gap: 9px; height: 52px; padding: 0 20px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--bg-page); color: var(--texto-sec);
+  font-family: 'DM Mono', monospace; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.5px;
+  cursor: pointer; white-space: nowrap; transition: border-color .2s ease, color .2s ease, background .2s ease;
 }
-.alin-app .rt-repair-toggle {
-  position: absolute; top: 0; left: 0; width: 52px; height: 52px; border: none; background: transparent;
-  color: var(--texto-sec); font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: opacity .25s ease, filter .25s ease, transform .45s cubic-bezier(0.22, 1, 0.36, 1);
+.alin-app .rt-reparo-btn:hover { color: var(--branco); border-color: var(--cinza-destaque); }
+.alin-app .rt-reparo-icon { display: inline-flex; font-size: 1rem; transition: transform .4s cubic-bezier(0.22, 1, 0.36, 1); }
+.alin-app .rt-reparo-wrap.open .rt-reparo-btn { color: var(--branco); border-color: var(--amarelo-destaque); background: rgba(255,204,0,0.06); }
+.alin-app .rt-reparo-wrap.open .rt-reparo-icon { transform: rotate(90deg); }
+
+.alin-app .rt-reparo-menu {
+  position: absolute; top: calc(100% + 10px); left: 0; min-width: 220px; z-index: 40;
+  background: var(--bg-panel); border: 1px solid var(--border); border-radius: 14px; padding: 8px;
+  box-shadow: 0 24px 48px -14px rgba(0,0,0,0.65);
+  display: flex; flex-direction: column; gap: 3px;
+  transform-origin: top left; transform: scale(0.92) translateY(-6px);
+  opacity: 0; filter: blur(4px); pointer-events: none;
+  transition: transform .25s cubic-bezier(0.22, 1, 0.36, 1), opacity .2s ease, filter .2s ease;
 }
-.alin-app .rt-repair-toggle:hover { color: var(--branco); }
-.alin-app .rt-repair-toggle.close { opacity: 0; filter: blur(4px); pointer-events: none; transform: rotate(-90deg); }
-.alin-app .rt-repair-widget.expanded .rt-repair-toggle.gear { opacity: 0; filter: blur(4px); pointer-events: none; transform: rotate(90deg); }
-.alin-app .rt-repair-widget.expanded .rt-repair-toggle.close { opacity: 1; filter: blur(0); pointer-events: auto; transform: rotate(0deg); }
-.alin-app .rt-repair-options {
-  display: flex; align-items: center; gap: 8px; padding: 0 10px 0 60px; opacity: 0; filter: blur(4px);
-  transition: opacity .3s ease .08s, filter .3s ease .08s; white-space: nowrap;
+.alin-app .rt-reparo-wrap.open .rt-reparo-menu { transform: scale(1) translateY(0); opacity: 1; filter: blur(0); pointer-events: auto; }
+.alin-app .rt-reparo-item {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 9px; border: none;
+  background: transparent; color: var(--branco); font-family: 'DM Mono', monospace; font-weight: 700;
+  font-size: 0.82rem; letter-spacing: 0.3px; text-align: left; cursor: pointer; white-space: nowrap;
+  transition: background-color .15s ease, padding-left .15s ease;
 }
-.alin-app .rt-repair-widget.expanded .rt-repair-options { opacity: 1; filter: blur(0); }
-.alin-app .rt-repair-option {
-  border: none; border-radius: 999px; padding: 9px 18px; font-family: 'DM Mono', monospace; font-weight: 700;
-  font-size: 0.78rem; letter-spacing: 0.5px; color: #fff; cursor: pointer; white-space: nowrap;
-  transition: filter .2s ease, transform .15s ease;
-}
-.alin-app .rt-repair-option:hover { filter: brightness(1.15); transform: translateY(-1px); }
-.alin-app .rt-repair-option:active { transform: translateY(0) scale(0.96); }
+.alin-app .rt-reparo-item:hover { background: rgba(255,255,255,0.06); padding-left: 18px; }
+.alin-app .rt-reparo-item .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }

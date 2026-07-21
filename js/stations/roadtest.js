@@ -4,8 +4,8 @@ const ROADTEST_REPARO_DESTINOS = [
   { id: 'eletrico', label: '⚡ Reparo Elétrico', cor: '#a855f7' },
 ];
 
-// Botão de ação por veículo: pill verde "Aprovar" (ação direta) + botão-engrenagem que
-// expande (largura via mola CSS) revelando os reparos possíveis para enviar o veículo.
+// Botão de ação por veículo: pill verde "Aprovar" (ação direta) + dropdown "Reparo" que
+// abre um menu flutuante (não altera o layout da linha) com os destinos possíveis.
 function montarAcaoRoadTest(v) {
   const aprovarBtn = el('button', {
     class: 'rt-approve-btn',
@@ -15,32 +15,35 @@ function montarAcaoRoadTest(v) {
     },
   }, 'Aprovar');
 
-  const gearBtn = el('button', { class: 'rt-repair-toggle gear', title: 'Enviar para reparo' }, '⚙');
-  const closeBtn = el('button', { class: 'rt-repair-toggle close', title: 'Fechar' }, '✕');
-  const options = el('div', { class: 'rt-repair-options' }, ROADTEST_REPARO_DESTINOS.map(d => el('button', {
-    class: 'rt-repair-option', style: `background:${d.cor}`,
+  const wrap = el('div', { class: 'rt-reparo-wrap' });
+  const trigger = el('button', {
+    class: 'rt-reparo-btn',
+    onclick: (e) => {
+      e.stopPropagation();
+      const abrir = !wrap.classList.contains('open');
+      document.querySelectorAll('.rt-reparo-wrap.open').forEach(w => w.classList.remove('open'));
+      if (abrir) wrap.classList.add('open');
+    },
+  }, [el('span', { class: 'rt-reparo-icon' }, '⚙'), 'Reparo']);
+  const menu = el('div', { class: 'rt-reparo-menu' }, ROADTEST_REPARO_DESTINOS.map(d => el('button', {
+    class: 'rt-reparo-item',
     onclick: () => {
       moveVeiculo(v.vin, d.id, { usuario: getSessao()?.usuario, acao: 'road-test' });
       toast(`${v.vin} enviado para ${STATIONS_BY_ID[d.id].nome}.`, 'success');
-      collapse();
+      wrap.classList.remove('open');
     },
-  }, d.label)));
+  }, [el('span', { class: 'dot', style: `background:${d.cor}` }), d.label])));
 
-  const widget = el('div', { class: 'rt-repair-widget' }, [gearBtn, closeBtn, options]);
-  widget.style.width = '52px';
+  wrap.appendChild(trigger);
+  wrap.appendChild(menu);
 
-  function expand() {
-    widget.classList.add('expanded');
-    widget.style.width = `${52 + options.scrollWidth}px`;
-  }
-  function collapse() {
-    widget.classList.remove('expanded');
-    widget.style.width = '52px';
-  }
-  gearBtn.addEventListener('click', expand);
-  closeBtn.addEventListener('click', collapse);
+  return el('div', { style: 'display:flex;align-items:center;gap:10px' }, [aprovarBtn, wrap]);
+}
 
-  return el('div', { style: 'display:flex;align-items:center;gap:10px' }, [aprovarBtn, widget]);
+// Único listener global (fecha qualquer dropdown "Reparo" aberto ao clicar fora dele).
+function fecharDropdownsReparoRoadTest(e) {
+  if (e.target.closest('.rt-reparo-wrap')) return;
+  document.querySelectorAll('.rt-reparo-wrap.open').forEach(w => w.classList.remove('open'));
 }
 
 function mountRoadTest(container) {
@@ -93,11 +96,13 @@ function mountRoadTest(container) {
   }
 
   buscaInput.addEventListener('input', render);
+  document.addEventListener('click', fecharDropdownsReparoRoadTest);
   render();
   unsubDb = onDbChange(render);
 
   return function unmount() {
     clockEl._stop();
     if (unsubDb) unsubDb();
+    document.removeEventListener('click', fecharDropdownsReparoRoadTest);
   };
 }

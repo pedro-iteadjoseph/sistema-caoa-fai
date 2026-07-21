@@ -47,6 +47,12 @@
 .home-v2 .metric span { font-family: 'Consolas', monospace; font-size: 9px; color: var(--muted); letter-spacing: .5px; text-transform: uppercase; }
 
 .home-v2 .chart-wrap { margin-bottom: 8px; }
+.home-v2 .spark-label {
+  font-family: 'Consolas', monospace; font-size: 6.5px; font-weight: 700;
+  paint-order: stroke; stroke: #141414; stroke-width: 3px; stroke-linejoin: round;
+  opacity: 0; transition: opacity .35s ease .35s;
+}
+.home-v2 .card:hover .spark-label { opacity: 1; }
 .home-v2 .hrs { display: flex; justify-content: space-between; margin-top: 4px; }
 .home-v2 .hrs span { font-family: 'Consolas', monospace; font-size: 7.5px; color: #4c4c49; letter-spacing: .5px; }
 

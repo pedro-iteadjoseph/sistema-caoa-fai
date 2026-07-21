@@ -49,6 +49,17 @@ function criarDatasetLinhaModerna(label, cor, data = []) {
   };
 }
 
+// Centraliza o eixo Y no zero (em vez de começar na base) para os gráficos de linha tipo
+// "entrada/realizados/backlog" — dá espaço visual pra enxergar a variação pra cima e pra
+// baixo, mesmo quando os valores atuais são só positivos.
+function centralizarEixoY(chart, ...series) {
+  const todos = series.flat();
+  const maxV = Math.max(1, ...todos);
+  const pad = Math.max(2, maxV);
+  chart.options.scales.y.min = -pad;
+  chart.options.scales.y.max = pad;
+}
+
 // Plugin de rótulos de valor nos gráficos (mostra o número em cada ponto/pico) — desligado
 // por padrão; cada gráfico liga explicitamente onde faz sentido (ver chartOptions()).
 if (window.Chart && window.ChartDataLabels) {

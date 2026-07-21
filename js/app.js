@@ -15,6 +15,14 @@ function estacaoSeriesHoje(stationId) {
     (v.history || []).forEach(h => {
       if (h.ts < hoje0ts) return;
       const hora = new Date(h.ts).getHours();
+      // Road Test não é um `station` real (é sempre visto sobre a fila do Alinhamento),
+      // então "chegada" é o lançamento/retorno no Alinhamento e "saída" é a decisão do
+      // Road Test (acao:'road-test') — sem isso, os dois arrays ficam sempre zerados.
+      if (stationId === 'roadtest') {
+        if (h.acao === 'lancamento' || h.acao === 'retorno') chegadas[hora]++;
+        if (h.acao === 'road-test') saidas[hora]++;
+        return;
+      }
       if (h.para === stationId) chegadas[hora]++;
       if (h.de === stationId) saidas[hora]++;
     });
@@ -42,6 +50,21 @@ function estacaoMetricas(station) {
     const hoje = dataOperacional();
     const eventosHoje = getEventosAlinhamento().filter(e => obterDataOperacionalAlinhamento(e.ts) === hoje);
     return [{ label: 'Entradas na produção hoje', value: eventosHoje.length }];
+  }
+  if (station.id === 'roadtest') {
+    // Road Test nunca vira `v.station` de fato (opera direto sobre a fila do Alinhamento),
+    // então os eventos que contam são os de acao:'road-test', não h.de === 'roadtest'.
+    const hoje0 = new Date(); hoje0.setHours(0, 0, 0, 0);
+    let aprovados = 0, paraReparo = 0;
+    getVeiculos().forEach(v => (v.history || []).forEach(h => {
+      if (h.acao !== 'road-test' || h.ts < hoje0.getTime()) return;
+      if (h.para === 'inspecao-shower') aprovados++;
+      else if (ALL_REPAIR_STATION_IDS.includes(h.para)) paraReparo++;
+    }));
+    return [
+      { label: 'Aprovados hoje', value: aprovados },
+      { label: 'Para reparo hoje', value: paraReparo },
+    ];
   }
   if (station.tipo === 'qualidade') {
     const hoje0 = new Date(); hoje0.setHours(0, 0, 0, 0);
@@ -71,6 +94,23 @@ function buildSparkPath(values, w, h, max, pad) {
     const y = h - pad - (v / max) * (h - pad * 2);
     return (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1);
   }).join(' ');
+}
+
+// Texto com o valor em cada "pico" (ponto que não é menor que os vizinhos) da mini-série
+// do card — só nos picos (não em cada ponto) pra não poluir uma área tão pequena.
+function buildSparkLabels(values, w, h, max, pad, color) {
+  const step = (w - pad * 2) / Math.max(1, values.length - 1);
+  let out = '';
+  values.forEach((v, i) => {
+    if (v <= 0) return;
+    const prev = values[i - 1], next = values[i + 1];
+    const ehPico = (prev === undefined || v >= prev) && (next === undefined || v >= next);
+    if (!ehPico) return;
+    const x = pad + i * step;
+    const y = h - pad - (v / max) * (h - pad * 2);
+    out += `<text class="spark-label" x="${x.toFixed(1)}" y="${(y - 5).toFixed(1)}" text-anchor="middle" fill="${color}">${v}</text>`;
+  });
+  return out;
 }
 
 // Card fica cinza e não clicável só quando HÁ sessão ativa sem acesso a essa estação
@@ -164,6 +204,8 @@ function montarHome() {
           <path class="spark entrada" d="${ePath}" fill="none" stroke="#54545080" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
           <path class="spark liberado" d="${dPath}" fill="none" stroke="${s.accent}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           <circle class="live-dot" cx="${lastX}" cy="${lastY}" r="2.6" fill="${s.accent}"/>
+          ${buildSparkLabels(enteredVals, W, H, max, PAD, '#8a8a86')}
+          ${buildSparkLabels(releasedVals, W, H, max, PAD, s.accent)}
         </svg>
         <div class="hrs">${horas.map(h => `<span>${h}h</span>`).join('')}</div>
       </div>

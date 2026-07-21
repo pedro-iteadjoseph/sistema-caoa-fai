@@ -184,8 +184,8 @@ function mountInspecaoShower(container) {
       grade.appendChild(el('div', { class: `box-hora ${(liberado + negado) >= META_HORA_PADRAO ? 'active' : ''}` }, [
         el('span', {}, rotuloHoraReal(turno, i)),
         el('div', { class: 'box-hora-split' }, [
-          el('div', { class: 'box-hora-metric ok' }, [el('strong', {}, String(liberado)), el('small', {}, 'LIBERADO')]),
-          el('div', { class: 'box-hora-metric ng' }, [el('strong', {}, String(negado)), el('small', {}, 'NEGADO')]),
+          el('div', { class: 'box-hora-metric ok' }, [el('strong', {}, String(liberado)), el('small', {}, 'OK')]),
+          el('div', { class: 'box-hora-metric ng' }, [el('strong', {}, String(negado)), el('small', {}, 'NG')]),
         ]),
       ]));
     }
@@ -278,6 +278,7 @@ function mountInspecaoShower(container) {
     charts.fluxo.data.datasets[0].data = entradas;
     charts.fluxo.data.datasets[1].data = decididosPorHora;
     charts.fluxo.data.datasets[2].data = atualPorHora;
+    centralizarEixoY(charts.fluxo, entradas, decididosPorHora, atualPorHora);
     charts.fluxo.update();
   }
 
