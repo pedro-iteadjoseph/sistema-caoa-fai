@@ -1,0 +1,15 @@
+:root {
+  --bg-dark: #151515;
+  --border-dark: #2a2a2a;
+  --ok: #22c55e;
+  --ng: #ef4444;
+  --info: #22d3ee;
+
+  /* Cor de destaque: cada tela de estação sobrescreve só --accent-main (inline,
+     a partir da cor cadastrada em constants.js); as demais são derivadas dela,
+     então nunca precisam ser definidas manualmente por estação. */
+  --accent-main: #ff8c00;
+  --accent-second: color-mix(in srgb, var(--accent-main) 55%, white 45%);
+  --accent-gradient: linear-gradient(135deg, var(--accent-main) 0%, var(--accent-second) 100%);
+  --accent-glow: color-mix(in srgb, var(--accent-main) 40%, transparent);
+}
