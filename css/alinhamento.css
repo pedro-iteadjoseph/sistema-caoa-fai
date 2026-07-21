@@ -1,0 +1,249 @@
+/* Módulo Alinhamento — visual fiel ao sistema original (DM Mono, tema escuro,
+   identidade azul/amarelo por linha de alinhamento). Tudo escopado sob .alin-app
+   para não vazar para o resto do sistema. */
+.alin-app {
+  --bg-page: #111111;
+  --bg-panel: #1c1c1c;
+  --border: #2f2f2f;
+  --cinza-destaque: #cccccc;
+  --branco: #ffffff;
+  --texto-sec: #7a7a7a;
+  --vermelho-suave: #ff5c5c;
+  --vermelho-fosco: #cc4444;
+  --hover-bg: #252525;
+  --amarelo-destaque: #ffcc00;
+  --amarelo-claro: #fceba1;
+  --verde-suave: #00ff66;
+  --azul-ativo: #3498db;
+
+  background: var(--bg-page);
+  color: var(--branco);
+  font-family: 'DM Mono', monospace;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.alin-app * { box-sizing: border-box; }
+.alin-app button, .alin-app input, .alin-app select, .alin-app textarea { font-family: 'DM Mono', monospace; }
+
+.alin-app .header { background: var(--bg-panel); border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+.alin-app .header-left { display: flex; flex-direction: column; gap: 4px; }
+.alin-app .header-title { font-size: 11px; color: var(--cinza-destaque); letter-spacing: 4px; }
+.alin-app .header-sub { font-size: 18px; font-weight: 700; letter-spacing: 2px; }
+.alin-app .header-right { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.alin-app .user-status-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; text-align: left; display: flex; flex-direction: column; gap: 2px; }
+.alin-app .user-status-label { font-size: 9px; color: var(--texto-sec); letter-spacing: 1px; }
+.alin-app .user-status-name { font-size: 12px; font-weight: bold; color: var(--amarelo-destaque); }
+.alin-app .btn-logout { background: transparent; border: none; color: var(--vermelho-suave); font-size: 10px; cursor: pointer; text-decoration: underline; margin-top: 2px; padding: 0; width: max-content; }
+.alin-app .hdr-cnt { text-align: right; }
+.alin-app .hdr-cnt-label { font-size: 10px; color: var(--texto-sec); letter-spacing: 2px; }
+.alin-app .hdr-cnt-val { font-size: 32px; font-weight: 900; }
+.alin-app .hdr-cnt-val.geral { color: var(--cinza-destaque); }
+.alin-app .hdr-cnt-val.parcial { color: var(--branco); }
+.alin-app .hdr-cnt-val.massiva { color: var(--vermelho-fosco); }
+
+.alin-app .turno-bar { background: #161616; border-bottom: 1px solid var(--border); padding: 12px 32px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.alin-app .turno-label { font-size: 11px; color: var(--texto-sec); letter-spacing: 2px; }
+.alin-app .turno-btns { display: flex; gap: 8px; }
+.alin-app .turno-btn { padding: 8px 20px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--texto-sec); font-size: 12px; font-weight: 700; cursor: pointer; letter-spacing: 1px; transition: all .2s; }
+.alin-app .turno-btn.active { border-color: var(--cinza-destaque); background: rgba(204,204,204,0.1); color: var(--cinza-destaque); }
+.alin-app .turno-info { font-size: 11px; color: var(--texto-sec); margin-left: 12px; letter-spacing: 1px; }
+.alin-app .btn-novo-dia { margin-left: auto; padding: 8px 20px; border-radius: 6px; border: 1px solid rgba(255,92,92,0.3); background: transparent; color: var(--vermelho-suave); font-size: 11px; font-weight: 700; cursor: pointer; letter-spacing: 1px; transition: all .2s; }
+.alin-app .btn-novo-dia:hover { border-color: var(--vermelho-suave); background: rgba(255,92,92,0.1); }
+.alin-app .btn-voltar-alin { padding: 8px 20px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--texto-sec); font-size: 11px; font-weight: 700; cursor: pointer; letter-spacing: 1px; }
+.alin-app .btn-voltar-alin:hover { color: var(--branco); border-color: var(--cinza-destaque); }
+
+.alin-app .nav { background: var(--bg-panel); border-bottom: 1px solid var(--border); padding: 0 32px; display: flex; flex-wrap: wrap; }
+.alin-app .nav-btn { padding: 16px 24px; border: none; background: transparent; border-bottom: 2px solid transparent; color: var(--texto-sec); font-size: 12px; font-weight: 700; cursor: pointer; letter-spacing: 2px; transition: all .2s; }
+.alin-app .nav-btn.active { border-bottom-color: var(--cinza-destaque); color: var(--cinza-destaque); }
+
+.alin-app .content { padding: 32px; flex: 1; display: flex; flex-direction: column; align-items: center; }
+.alin-app .aba { display: none; width: 100%; max-width: 1200px; }
+.alin-app .aba.active { display: block; }
+.alin-app .lancamento-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; gap: 24px; }
+.alin-app .relogio { font-size: 56px; color: var(--cinza-destaque); letter-spacing: 4px; text-shadow: 0 0 20px rgba(204,204,204,0.3); transition: color .3s ease; }
+.alin-app .turno-ativo-badge { font-size: 12px; color: var(--amarelo-destaque); letter-spacing: 3px; border: 1px solid var(--amarelo-destaque); background: rgba(255,204,0,0.05); padding: 8px 20px; border-radius: 20px; font-weight: bold; box-shadow: 0 0 10px rgba(255,204,0,0.1); }
+
+.alin-app .input-azul { border-color: var(--azul-ativo) !important; box-shadow: 0 0 10px rgba(52,152,219,0.3); }
+.alin-app .input-amarelo { border-color: var(--amarelo-claro) !important; box-shadow: 0 0 10px rgba(252,235,161,0.3); }
+.alin-app .btn-azul.active { border-color: var(--azul-ativo) !important; color: var(--azul-ativo) !important; background: rgba(52,152,219,0.1) !important; }
+.alin-app .btn-amarelo.active { border-color: var(--amarelo-claro) !important; color: var(--amarelo-claro) !important; background: rgba(252,235,161,0.1) !important; }
+
+.alin-app .btn-parada { padding: 12px 24px; border-radius: 8px; border: 2px solid var(--border); background: var(--bg-panel); color: var(--texto-sec); font-size: 14px; font-weight: 700; cursor: pointer; transition: all .2s; margin-top: -10px; margin-bottom: 24px; letter-spacing: 1px; }
+.alin-app .btn-parada:hover { background: rgba(255,255,255,0.05); }
+.alin-app .btn-parada.active { border-color: var(--vermelho-suave); background: rgba(255,92,92,0.1); color: var(--vermelho-suave); animation: alinPulse 2s infinite; }
+.alin-app .parada-timer { font-size: 20px; color: var(--vermelho-suave); font-weight: bold; letter-spacing: 2px; margin-top: -10px; margin-bottom: 16px; display: none; text-shadow: 0 0 10px rgba(255,92,92,0.3); }
+@keyframes alinPulse { 0% { box-shadow: 0 0 0 0 rgba(255,92,92,0.4); } 70% { box-shadow: 0 0 0 10px rgba(255,92,92,0); } 100% { box-shadow: 0 0 0 0 rgba(255,92,92,0); } }
+
+.alin-app .bloqueio-banner { display: none; color: var(--amarelo-destaque); border: 1px solid var(--amarelo-destaque); background: rgba(255,204,0,0.06); padding: 10px 24px; border-radius: 8px; letter-spacing: 1px; font-size: 12px; font-weight: bold; text-align: center; }
+
+.alin-app .alin-btns { display: flex; gap: 12px; }
+.alin-app .alin-btn { padding: 12px 32px; border-radius: 8px; border: 2px solid var(--border); background: var(--bg-panel); color: var(--texto-sec); font-size: 14px; font-weight: 700; cursor: pointer; transition: all .2s; letter-spacing: 1px; }
+
+.alin-app .form-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; width: 100%; max-width: 500px; }
+.alin-app .form-label { font-size: 12px; color: var(--texto-sec); letter-spacing: 3px; text-transform: uppercase; }
+.alin-app .vin-input { width: 100%; padding: 20px 24px; border-radius: 12px; border: 2px solid var(--border); background: var(--bg-page); color: var(--branco); font-size: 24px; letter-spacing: 4px; text-align: center; outline: none; transition: border-color .2s; }
+.alin-app .vin-input:disabled { opacity: .4; cursor: not-allowed; }
+
+.alin-app .btn-lancar { width: 100%; padding: 16px; border-radius: 10px; border: none; background: var(--cinza-destaque); color: #000; font-size: 16px; font-weight: 900; letter-spacing: 2px; cursor: pointer; transition: background-color 1.1s ease, color 1.1s ease, opacity .2s; }
+.alin-app .btn-lancar:hover { opacity: .85; }
+.alin-app .btn-lancar:disabled { opacity: .4; cursor: not-allowed; }
+.alin-app .btn-lancar-azul { background: var(--azul-ativo) !important; color: #fff !important; }
+.alin-app .btn-lancar-amarelo { background: var(--amarelo-claro) !important; color: #000 !important; }
+.alin-app .btn-lancar-sucesso { background: var(--verde-suave) !important; color: #000 !important; }
+.alin-app .btn-lancar-erro { background: var(--vermelho-suave) !important; color: #fff !important; }
+.alin-app .btn-lancar-texto { display: inline-block; transition: opacity .35s ease; }
+
+.alin-app .contadores { display: flex; gap: 48px; margin-top: 16px; }
+.alin-app .contador { text-align: center; }
+.alin-app .contador-num { font-size: 36px; font-weight: 900; }
+.alin-app .contador-label { font-size: 11px; color: var(--texto-sec); letter-spacing: 2px; margin-top: 4px; }
+.alin-app .feedback { padding: 20px 36px; border-radius: 14px; text-align: center; animation: alinFadeIn .3s ease; width: 100%; max-width: 500px; }
+.alin-app .feedback.ok { background: rgba(0,255,102,0.05); border: 2px solid var(--verde-suave); }
+.alin-app .feedback.erro { background: rgba(255,92,92,0.1); border: 2px solid var(--vermelho-suave); }
+.alin-app .feedback-msg { font-size: 24px; font-weight: 900; letter-spacing: 2px; }
+.alin-app .feedback.ok .feedback-msg { color: var(--verde-suave); }
+.alin-app .feedback.erro .feedback-msg { color: var(--vermelho-suave); }
+.alin-app .feedback-sub { color: var(--texto-sec); font-size: 13px; margin-top: 5px; letter-spacing: 1px; }
+
+.alin-app .search-container { width: 100%; max-width: 400px; margin-bottom: 32px; display: flex; flex-direction: column; gap: 8px; }
+.alin-app .search-input { width: 100%; padding: 14px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-panel); color: var(--branco); font-size: 14px; outline: none; transition: border-color .2s; }
+.alin-app .search-input:focus { border-color: var(--cinza-destaque); }
+.alin-app .search-result { font-size: 12px; font-weight: bold; letter-spacing: 1px; padding: 6px 10px; border-radius: 4px; display: inline-block; margin-top: 4px; }
+.alin-app .sub-tabs { display: flex; gap: 8px; margin-bottom: 24px; }
+.alin-app .sub-tab { padding: 8px 20px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-panel); color: var(--texto-sec); font-size: 12px; cursor: pointer; letter-spacing: 1px; transition: all .2s; }
+.alin-app .sub-tab.active { border-color: var(--cinza-destaque); background: rgba(204,204,204,0.1); color: var(--cinza-destaque); }
+
+.alin-app .faixas-wrap { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
+.alin-app .faixa-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px; min-width: 150px; flex-shrink: 0; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.alin-app .faixa-card.atual { border-color: var(--cinza-destaque); }
+.alin-app .faixa-fill { position: absolute; bottom: 0; left: 0; width: 100%; z-index: 0; transition: height .8s cubic-bezier(0.4,0,0.2,1); }
+.alin-app .faixa-content { position: relative; z-index: 1; text-align: center; }
+.alin-app .faixa-header { font-size: 11px; color: var(--texto-sec); letter-spacing: 2px; margin-bottom: 8px; }
+.alin-app .faixa-card.atual .faixa-header { color: var(--cinza-destaque); font-weight: bold; }
+.alin-app .faixa-qtd { font-size: 32px; font-weight: 900; color: var(--branco); }
+
+.alin-app .tabela-nativa { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 32px; }
+.alin-app .tabela-nativa thead { background: rgba(204,204,204,0.05); }
+.alin-app .tabela-nativa th { padding: 14px 16px; text-align: center; color: var(--cinza-destaque); letter-spacing: 2px; border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 700; text-transform: uppercase; }
+.alin-app .tabela-nativa td { padding: 12px 16px; text-align: center; border-bottom: 1px solid var(--border); color: var(--branco); }
+.alin-app .tabela-nativa tr:last-child td { border-bottom: none; }
+.alin-app .tabela-nativa tbody tr:hover { background: var(--hover-bg); }
+.alin-app .tabela-nativa .positivo { color: var(--verde-suave); font-weight: bold; }
+.alin-app .tabela-nativa .negativo { color: var(--vermelho-suave); font-weight: bold; }
+.alin-app .tabela-nativa .titulo-linha { text-align: left; color: var(--texto-sec); }
+.alin-app .tabela-nativa tfoot { background: #161616; font-weight: bold; }
+.alin-app .tabela-nativa tfoot td { color: var(--cinza-destaque); border-top: 2px solid var(--border); }
+.alin-app .tabela-label { font-size: 14px; color: var(--cinza-destaque); font-weight: bold; letter-spacing: 1px; margin-bottom: 12px; }
+
+.alin-app .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+.alin-app .modal-overlay.show { display: flex; }
+.alin-app .modal { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 14px; padding: 32px 40px; max-width: 450px; width: 90%; text-align: center; animation: alinFadeIn .3s ease; }
+.alin-app .modal h2 { font-size: 18px; color: var(--vermelho-suave); letter-spacing: 2px; margin-bottom: 16px; }
+.alin-app .modal p { font-size: 13px; color: var(--texto-sec); letter-spacing: 1px; margin-bottom: 24px; line-height: 1.7; }
+.alin-app .modal-btns { display: flex; gap: 12px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+.alin-app .modal-btn { flex: 1; padding: 12px 24px; border-radius: 8px; border: none; font-size: 13px; font-weight: 700; cursor: pointer; letter-spacing: 1px; transition: opacity .2s; }
+.alin-app .modal-btn:hover { opacity: .9; }
+.alin-app .modal-btn.confirm { background: var(--vermelho-suave); color: #fff; }
+.alin-app .modal-btn.confirm-amarelo { background: var(--amarelo-destaque); color: #000; }
+.alin-app .modal-btn.cancel { background: var(--bg-page); border: 1px solid var(--border); color: var(--branco); }
+.alin-app .login-input { width: 100%; padding: 14px 18px; background: var(--bg-page); border: 1px solid var(--border); border-radius: 8px; color: var(--branco); font-size: 14px; margin-bottom: 16px; outline: none; transition: border-color .2s; }
+.alin-app .login-input:focus { border-color: var(--amarelo-destaque); }
+.alin-app .login-erro { color: var(--vermelho-suave); font-size: 12px; margin-top: -12px; margin-bottom: 12px; display: none; letter-spacing: 1px; }
+
+.alin-app .btn-filter-massiva { padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-panel); color: var(--texto-sec); font-size: 11px; font-weight: 700; cursor: pointer; margin-bottom: 12px; letter-spacing: 1px; transition: all .2s; }
+.alin-app .btn-filter-massiva.active { border-color: var(--vermelho-suave); background: rgba(255,92,92,0.1); color: var(--vermelho-suave); }
+.alin-app .massiva-config-wrap { width: 100%; max-width: 600px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+.alin-app .massiva-textarea { width: 100%; height: 250px; background: var(--bg-page); border: 1px solid var(--border); border-radius: 8px; padding: 16px; color: var(--branco); font-size: 14px; outline: none; resize: none; margin-bottom: 16px; }
+.alin-app .btn-massiva-save { width: 100%; padding: 14px; background: var(--vermelho-fosco); color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; letter-spacing: 1px; }
+.alin-app .input-meta-live { width: 50px; background: var(--bg-page); border: 1px solid var(--border); color: var(--branco); text-align: center; font-size: 13px; border-radius: 4px; padding: 2px; }
+.alin-app .btn-del-row { background: transparent; border: none; color: var(--vermelho-suave); cursor: pointer; font-weight: bold; padding: 2px 6px; }
+.alin-app .user-select { width: 100%; padding: 12px; background: var(--bg-page); border: 1px solid var(--border); color: var(--branco); border-radius: 6px; font-size: 14px; outline: none; margin-bottom: 12px; }
+
+@keyframes alinFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ---------- Componentes compartilhados (app.css) reestilizados dentro do tema Alinhamento ----------
+   Usado por Road Test, Inspeção de Shower e Reparo de Shower — telas que continuam
+   reaproveitando montarRelogio()/montarTabBarVoltar()/chartCard()/tabelas do app.css,
+   mas devem herdar a identidade visual escura + DM Mono do Alinhamento. */
+.alin-app .app-header { background: var(--bg-panel); border-bottom: 1px solid var(--border); }
+.alin-app .app-header h1 { color: var(--branco); border-left-color: var(--amarelo-destaque); }
+.alin-app .tab-bar { background: #161616; border-bottom: 1px solid var(--border); }
+.alin-app .tab-btn { color: var(--texto-sec); }
+.alin-app .tab-btn:hover { color: var(--branco); background: rgba(255,255,255,0.04); }
+.alin-app .tab-btn.active { color: var(--branco); border-bottom-color: var(--amarelo-destaque); }
+.alin-app .tab-btn.tab-gerenciar { color: var(--amarelo-destaque); }
+.alin-app .tab-btn.tab-sair { color: var(--vermelho-suave); }
+
+.alin-app .clock { color: var(--cinza-destaque); }
+.alin-app .shift-badge { border-color: var(--amarelo-destaque); color: var(--amarelo-destaque); background: rgba(255,204,0,0.05); }
+
+.alin-app .stat-box { border-left-color: var(--border); }
+.alin-app .stat-box span { color: var(--texto-sec); }
+.alin-app .stat-box strong { color: var(--branco); }
+.alin-app .stat-box.highlight strong { color: var(--amarelo-destaque); }
+
+.alin-app .hora-hora-section, .alin-app .table-section, .alin-app .chart-card {
+  background: var(--bg-panel); border: 1px solid var(--border);
+}
+.alin-app .hora-hora-header h3, .alin-app .table-section h3, .alin-app .chart-card h3 { color: var(--cinza-destaque); }
+.alin-app .box-hora { background: var(--bg-page); border-color: var(--border); }
+.alin-app .box-hora.active { border-color: var(--amarelo-destaque); }
+.alin-app .box-hora.active::after { background: var(--amarelo-destaque); }
+
+.alin-app .log-table th { background: #161616; color: var(--texto-sec); border-bottom-color: var(--border); }
+.alin-app .log-table td { color: var(--branco); border-bottom-color: var(--border); }
+.alin-app .log-table tr:hover td { background: var(--hover-bg); }
+
+.alin-app .input-dark { background: var(--bg-page); border-color: var(--border); color: var(--branco); }
+.alin-app .input-dark:focus { border-color: var(--amarelo-destaque); box-shadow: 0 0 8px rgba(255,204,0,0.25); }
+
+.alin-app .btn-shift { background: var(--bg-page); border-color: var(--border); color: var(--texto-sec); }
+.alin-app .btn-shift.active { background: rgba(255,204,0,0.1); border-color: var(--amarelo-destaque); color: var(--amarelo-destaque); }
+
+/* Botões de ação coloridos com fade no hover (Road Test, filas de Shower) — a cor vem
+   de --btn-c definida inline em cada botão. */
+.alin-app .rt-btn {
+  padding: 10px 18px; border-radius: 8px; border: 2px solid var(--btn-c, #666); background: transparent;
+  color: var(--btn-c, #666); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.5px; cursor: pointer;
+  transition: background-color .3s ease, color .3s ease, box-shadow .3s ease;
+}
+.alin-app .rt-btn:hover { background: var(--btn-c, #666); color: #111; box-shadow: 0 0 18px var(--btn-c, #666); }
+.alin-app .rt-btn:active { transform: scale(0.97); }
+
+/* ---------- Ação do Road Test: pill "Aprovar" + botão-engrenagem expansível ---------- */
+.alin-app .rt-approve-btn {
+  height: 52px; padding: 0 28px; border: none; border-radius: 999px; background: #22c55e; color: #06210f;
+  font-family: 'DM Mono', monospace; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;
+  font-size: 0.85rem; cursor: pointer; white-space: nowrap; box-shadow: 0 8px 20px -8px rgba(34,197,94,0.6);
+  transition: filter .2s ease, box-shadow .2s ease, transform .15s ease;
+}
+.alin-app .rt-approve-btn:hover { filter: brightness(1.08); box-shadow: 0 10px 26px -6px rgba(34,197,94,0.75); transform: translateY(-1px); }
+.alin-app .rt-approve-btn:active { transform: translateY(0) scale(0.97); }
+
+.alin-app .rt-repair-widget {
+  position: relative; display: flex; align-items: center; height: 52px; background: var(--bg-page);
+  border: 1px solid var(--border); border-radius: 999px; overflow: hidden;
+  transition: width .45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.alin-app .rt-repair-toggle {
+  position: absolute; top: 0; left: 0; width: 52px; height: 52px; border: none; background: transparent;
+  color: var(--texto-sec); font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: opacity .25s ease, filter .25s ease, transform .45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.alin-app .rt-repair-toggle:hover { color: var(--branco); }
+.alin-app .rt-repair-toggle.close { opacity: 0; filter: blur(4px); pointer-events: none; transform: rotate(-90deg); }
+.alin-app .rt-repair-widget.expanded .rt-repair-toggle.gear { opacity: 0; filter: blur(4px); pointer-events: none; transform: rotate(90deg); }
+.alin-app .rt-repair-widget.expanded .rt-repair-toggle.close { opacity: 1; filter: blur(0); pointer-events: auto; transform: rotate(0deg); }
+.alin-app .rt-repair-options {
+  display: flex; align-items: center; gap: 8px; padding: 0 10px 0 60px; opacity: 0; filter: blur(4px);
+  transition: opacity .3s ease .08s, filter .3s ease .08s; white-space: nowrap;
+}
+.alin-app .rt-repair-widget.expanded .rt-repair-options { opacity: 1; filter: blur(0); }
+.alin-app .rt-repair-option {
+  border: none; border-radius: 999px; padding: 9px 18px; font-family: 'DM Mono', monospace; font-weight: 700;
+  font-size: 0.78rem; letter-spacing: 0.5px; color: #fff; cursor: pointer; white-space: nowrap;
+  transition: filter .2s ease, transform .15s ease;
+}
+.alin-app .rt-repair-option:hover { filter: brightness(1.15); transform: translateY(-1px); }
+.alin-app .rt-repair-option:active { transform: translateY(0) scale(0.96); }
